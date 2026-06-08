@@ -1,15 +1,19 @@
 ﻿# Statistics and Applications (ISYE 3770)
 
-Coursework archive for Georgia Tech ISYE 3770, including project, lab, homework, and assignment materials kept for undergraduate education documentation.
+Statistics coursework using R Markdown for applied analysis, probability, statistical inference, modeling, and reproducible homework reports.
 
-## Source
+## Included Materials
 
-Original local coursework folder:
+- R Markdown homework files
+- Rendered reports
+- Statistical analysis artifacts
+
+## Archive Notes
+
+This repository was prepared from a local Georgia Tech coursework folder for documentation and archival purposes. Generated dependency folders, nested Git metadata, local build outputs, compressed archives, and OS metadata were excluded during preparation.
+
+Original local source:
 
 ```
 C:\Users\devin\OneDrive\Documents\Georgia_Tech\ISYE 3770
 ```
-
-## Notes
-
-Generated dependency folders, nested Git metadata, local build outputs, archives, and OS metadata were excluded when this repository was prepared.
