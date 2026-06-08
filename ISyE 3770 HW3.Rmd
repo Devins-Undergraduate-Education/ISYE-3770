@@ -1,0 +1,249 @@
+---
+title: "ISyE 3770 HW3"
+author: "Devin Fromond"
+date: "2024-09-17"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Problem 3.3.6
+
+### Part A:
+
+We observe the Cumulative Distribution Function to be defined as 
+
+$$
+F(x)=P(X=x)=\int_{-\infty}^x{f(u)du}
+$$
+Therefore, we find:
+\[
+F(x) =
+\begin{cases} 
+0, & x < 0 \\
+0.17, & 0 \leq x < 2 \\
+0.52, & 2 \leq x < 3 \\
+0.85, & 3 \leq x < 4 \\
+1, & x \geq 4
+\end{cases}
+\]
+
+
+### Part B:
+
+We find the Mean and Variance to be defined as
+$$
+E[X]=\int^\infty_{-\infty}xf(x)dx
+$$
+$$
+V(X)=E[X^2]-(E[X])^2
+$$
+
+We will begin by solving for Mean:
+$$
+E[X]=0.17(0)+0.35(2)+0.33(3)+0.15(4)=2.29
+$$
+Next, We will solve for Variance:
+$$
+E[X^2]=0.17(0^2)+0.35(2^2)+0.33(3^2)+0.15(4^2)=6.77
+$$
+$$
+V(X)=6.77-(2.29)^2=6.77-5.2441=1.5259
+$$
+
+## Problem 3.4.3
+
+As defined in notes, for a Discrete Random Variable, we have:
+$$
+E[X]=\frac{a+b}{2}
+$$
+$$
+V(X)=\frac{(b-a+1)^2-1}{12}
+$$
+We easily find $a=0$ and $b=9$ as our upper and lower, inclusive, bounds. Therefore, we first calculate the Expected Value, utilizing the property of pulling out constants.
+$$
+E[Y=5X]=5(E[X])=5(\frac{0+9}{2})=22.5
+$$
+Next, we calculate Variance, utilizing the property of pulling out constants.
+$$
+V(Y=5X)=5^2V(X)=5^2(\frac{(9-0+1)^2-1}{12})=25(8.25)=206.25
+$$
+
+We find Standard Deviation to be defined as
+$$
+SD(X)=\sqrt{Var(X)}
+$$
+
+Therefore, we have
+$$
+SD(Y)=\sqrt{Var(Y)}=\sqrt{206.25}=14.37
+$$
+
+## Problem 3.5.13
+
+### Part A:
+
+We recognize we are solving for $P(number\ of\ passengers \leq 120)$ and that this question models a Binomial Distribution.
+
+$$
+f(x)=P(X=x)=\binom{n}{x}p^x(1-p)^{n-x}
+$$
+To save time, we will calculate $1-P(number\ of\ passengers > 120)$. Therefore, we have
+$$
+P(X=121)=\binom{125}{121}0.1^{121}(1-0.1)^{125-121}
+$$
+We will perform the above calculation for $X=122,\ X=123,\ X=124,\ X=125$.
+```{r planePassengersA1}
+choose(125, 121) * 0.9^121 * (1 - 0.9)^(125 - 121)+
+choose(125, 122) * 0.9^122 * (1 - 0.9)^(125 - 122)+
+choose(125, 123) * 0.9^123 * (1 - 0.9)^(125 - 123)+
+choose(125, 124) * 0.9^124 * (1 - 0.9)^(125 - 124)+
+choose(125, 125) * 0.9^125 * (1 - 0.9)^(125 - 125)
+```
+Therefore, it is evident $1-0.00386=0.99614$ which is our final answer.
+
+### Part B:
+
+We wish to find $P(number\ of\ passengers <120)$. Alternatively, we wish to find $1-P(number\ of\ passengers\geq 120)$.We remember we solved for a similar probability previously. Let's continue with the previous logic.
+
+```{r planePassengersB}
+choose(125, 120) * 0.9^120 * (1 - 0.9)^(125 - 120)+
+choose(125, 121) * 0.9^121 * (1 - 0.9)^(125 - 121)+
+choose(125, 122) * 0.9^122 * (1 - 0.9)^(125 - 122)+
+choose(125, 123) * 0.9^123 * (1 - 0.9)^(125 - 123)+
+choose(125, 124) * 0.9^124 * (1 - 0.9)^(125 - 124)+
+choose(125, 125) * 0.9^125 * (1 - 0.9)^(125 - 125)
+```
+Therefore, it is evident $1-0.01143=0.98857$ which is our final answer.
+
+## Problem 3.6.6
+
+### Part A: 
+
+\[
+f(x)=p(X=x)=p(1-p)^{x-1}
+\]
+
+Since we know there is an $0.80$ probability of defeating each enemy, we have a Geometric Distribution defined as:
+
+\[
+f(x)=p(X=x)=0.80(1-0.80)^{x-1}
+\]
+
+### Part B:
+
+We observe the probability of a player reaching x level can be modeled by a simple Geometric Series: 
+
+$$P(X\geq x)=p^x=0.8^x$$
+
+Therefore, we find
+
+$$P(X\geq 2)=0.8^2=0.64$$
+
+### Part C: 
+
+We know the mean, or expected value of the first success, of a Geometric Distribution is defined as $E[X]=\frac{1}{p}$. Therefore, to find the first failure, we have $E[X]=\frac{1}{1-p}$. 
+$$E[X]=\frac{1}{1-0.8}=\frac{1}{0.2}=5$$
+
+### Part D: 
+
+As defined in Part B, we have:
+
+$$P(X\geq 4)=0.8^4=0.4096$$
+
+## Problem 3.6.13
+
+### Part A:
+
+We recognize this problem to be Negative binomial distribution with $r=2$ and $x=10$. Therefore, we have
+$$
+f(x)=\binom{10-1}{2-1}0.2^2(1-0.2)^{10-2}
+$$
+
+```{r camerasA}
+choose(10 - 1, 2 - 1) * 0.2^2 * (1 - 0.2)^(10 - 2)
+```
+
+### Part B:
+
+We recognize this problem to be semi-identical to one covered in class, which uses a summation to calculate the probability. 
+
+$$
+P(X \leq x)=F(x)=\sum^x_{x=2}\binom{x-1}{2 - 1}(0.2)^2(0.8)^{x-3}
+$$
+
+```{r camerasB}
+pnbinom(q = 4 - 2, size = 2, prob = 0.2)
+```
+
+### Part C:
+
+The expected number of trials to get the third failure resembles a simple plug-and-chug from the Expected Value function for Negative Binomial Functions, defined as
+
+$$
+E[X]=\frac{r}{1-p}
+$$
+Therefore, we have $E[X]=\frac{3}{1-0.8}=\frac{3}{0.2}=15$
+
+## Problem 3.7.6
+
+### Part A:
+
+The probability of choosing one correct number is $\frac{6}{40}$. The probability of choosing two correct numbers is $\frac{6}{40}*\frac{5}{39}$ since there is one number less than before and the events are independent. As such we have:
+```{r lotteryA}
+(6/40)*(5/39)*(4/38)*(3/37)*(2/36)*(1/35)
+```
+Therefore, we arrive at a final answer of $0.00000026$ or $2.6 \times  10^{-7}$.
+
+### Part B:
+
+We recognize the problem resembles a HYpergeometric Distribution, where $N=40$ (# of items), $n=6$ (sample),$k=6$ (successes from population), $x=5$ (successes from sample). Therefore, we have
+
+$$
+f(x)=\frac{\binom{6}{5}\binom{40-6}{6-5}}{\binom{40}{6}}
+$$
+
+```{r lotteryB}
+choose(6,5)*choose(40-6,6-5)/choose(40,6)
+```
+
+Therefore, we arrive at our answer of $0.0000531$ or $5.31\times 10^{-6}$.
+
+### Part C:
+
+Using similar logic as Part C, we simply have $x=4$ with the same other previously defined variables.
+```{r lotteryC}
+choose(6,4)*choose(40-6,6-4)/choose(40,6)
+```
+Therefore, we arrive at our answer of $0.00219$ or $2.19\times 10^{-3}$.
+
+### Part D:
+
+We find each week to represent a Bernoulli Trial, in which each week, there are two possible outcomes: Success or Failure. 
+
+As such, we define the Expected Value of the Bernoulli Distribution to be
+
+$$
+E[X]=\sum_xxf(x)=p
+$$
+
+We notice the probability of success was derived in Part A: $2.6 \times  10^{-7}$.
+
+We wish to instead find $E[T]$, where T is the number of trials. Therefore, the expected number of trials until the first success is defined as 
+$$
+E[T]=\frac{1}{p}
+$$
+Therefore, we arrive at our (estimated) answer of 
+$$
+E[T]\frac{1}{0.00000026}
+$$
+
+```{r lotteryD}
+1/0.0000002605266
+ 
+```
+
+Therefore, we have our final answer of $3838380$ weeks until a player matches all six numbers in the state's sample.

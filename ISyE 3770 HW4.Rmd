@@ -1,0 +1,328 @@
+---
+title: "ISyE 3770 HW4"
+author: "Devin Fromond"
+date: "2024-09-29"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Problem 3.8.12
+
+### Part A:
+$$
+X \sim Pois(1.8)
+$$
+$$
+P(X>5)=1-P(X \leq 5)=1-\sum^5_{k=0}\frac{e^{-1.8}1.8 ^k}{k!}
+$$
+
+```{r PoisA}
+1 - sum(exp(-1.8) * 1.8^(0:5) / factorial(0:5))
+```
+
+### Part B:
+$$
+X \sim Pois(1.8\times 7)=Pois(12.6)
+$$
+
+$$
+P(X<5)=\sum^4_{k=0}\frac{e^{-12.6}12.6 ^k}{k!}
+$$
+```{r PoisB}
+sum(exp(-12.6) * 12.6^(0:4) / factorial(0:4))
+```
+
+### Part C:
+
+$$
+X \sim Pois(1.8\times d)=Pois(1.8d)
+$$
+
+$$
+P(X \geq 1)=1-P(X < 1)=1-\frac{e^{-1.8d}(1.8d) ^0}{0!}=0.99
+$$
+
+$$
+d=-\frac{ln(0.01)}{1.8}
+$$
+
+```{r PoisC}
+(-1) * log(0.01) / 1.8
+```
+
+### Part D:
+
+$$
+X \sim Pois(m\times 1)=Pois(m)
+$$
+$$
+P(X>5)=1-P(X \leq 5)=1-\sum^5_{k=0}\frac{e^{-m}m ^k}{k!}=0.1
+$$
+
+```{r PoisD}
+uniroot(function(m) 1 - sum(exp(-m) * m^(0:5) / factorial(0:5)) - 0.1, lower = 0, upper = 10)$root
+
+```
+
+## Problem 4.1.2
+
+### Part A:
+
+$$
+P(X<2)=\int^2_{1}\frac{2}{x^3}dx=\frac{3}{4}
+$$
+
+### Part B:
+
+$$
+P(X>5)=\int^\infty_{5}\frac{2}{x^3}dx=\frac{1}{25}
+$$
+
+### Part C:
+
+$$
+P(4<X<8)=\int^8_{4}\frac{2}{x^3}dx=\frac{3}{64}
+$$
+
+### Part D:
+
+$$
+P(X<4\ or\ X>8)=P(X<4)+P(X>8)=\int^\infty_{8}\frac{2}{x^3}dx+\int^4_{1}\frac{2}{x^3}dx=\frac{1}{64}+\frac{15}{16}=\frac{61}{64}
+$$
+
+### Part E:
+
+$$
+P(X<x)=\int^x_{1}\frac{2}{x^3}dx=0.95
+$$
+
+$$
+(-\frac{1}{x^2}) \Big|_1^x=-\frac{1}{x^2}+1=0.95
+$$
+$$
+x=\sqrt{20}
+$$
+
+## Problem 4.4.2
+
+### Part A:
+
+\[ F(x)= \begin{cases} 
+      0 & x<0.95 \\
+      \frac{x-0.95}{1.05-0.95}=10(x-0.95) & 0.95\leq x\leq 1.05 \\
+      1 & x > 1.05 
+   \end{cases}
+\]
+
+### Part B: 
+
+$$
+P(X>1.02)=1-F(1.02)=1-10(1.02-0.95)=1-0.7=0.3
+$$
+
+### Part C: 
+
+$$
+P(X>x)=0.9\ or\ F(x)=0.1
+$$
+$$
+10(x-0.95)=0.1
+$$
+
+$$
+x=0.96
+$$
+
+### Part D: 
+
+$$
+\mu=\frac{a+b}{2}=\frac{0.95+1.05}{2}=1.00
+$$
+$$
+\sigma^2=\frac{(b-a)^2}{12}=\frac{(1.05-0.95)^2}{12}=\frac{(0.1)^2}{12}=0.000833
+$$
+
+## Problem 4.5.6
+
+### Part A:
+
+
+$$
+Z=\frac{X-\mu}{\sigma}=\frac{240-260}{50}=-0.4
+$$
+$$
+P(X>240)=1-P(Z<-0.4)=1-0.3446=0.6554
+$$
+
+### Part B: 
+For the first Quartile:
+$$
+Z \approx -0.6745
+$$
+$$
+X=\mu + Z(\sigma)=260+(-0.6745)(50)=226.275\ min
+$$
+
+For the second Quartile: 
+$$
+Z \approx 0.6745
+$$
+$$
+X=260+(0.6745)(50)=293.7\ min
+$$
+
+### Part C: 
+
+$$
+Z \approx -1.645
+$$
+$$
+X=260+(-1.645)(50)=177.75\ min
+$$
+
+## Problem 4.5.12
+
+### Part A: 
+
+$$
+Z=\frac{X-\mu}{\sigma}=\frac{350-310}{45}=0.8889
+$$
+
+$$
+P(Z>0.8889)=1-P(Z<0.8889)=0.1864
+$$
+
+### Part B:
+
+$$
+Z \approx 2.326
+$$
+$$
+X=310+2.326(45)=414.67\ mill\ gal
+$$
+
+### Part C:
+
+$$
+Z \approx -1.645
+$$
+$$
+X=310+(-1.645)(45)=235.975\ mill\ gal
+$$
+
+### Part D: 
+
+$$
+Z=\frac{X-\mu}{45}
+$$
+$$
+2.33=\frac{350+\mu}{45}
+$$
+$$
+\mu=245.2
+$$
+
+## Problem 4.7.5
+
+### Part A: 
+
+$$
+P(T\leq30)=1-P(T>30)=1-1+e^{-\frac{1}{15}(30)}=0.1353
+$$
+
+### Part B: 
+
+$$
+P(T\leq 10)=1-e^{-\frac{1}{15}(10)}=0.4866
+$$
+
+### Part C: 
+
+$$
+P(5<T<10)=P(T<10)-P(T<5)=0.4866-(1-e^{-\frac{1}{15}(5)})=0.4866-0.2835=0.2031
+$$
+
+### Part D:
+
+$$
+P(T\leq t)=1-e^{-\lambda t}=0.90
+$$
+$$
+1-e^{-\frac{1}{15}t}=0.90
+$$
+$$
+t=34.54\ min
+$$
+
+## Problem 4.7.11
+
+### Part A: 
+
+$$
+\lambda t=\frac{1}{10}(30)=3
+$$
+$$
+N \sim Pois(3)
+$$
+$$
+P(N>3)=1-P(N\leq 3)=1-\sum^3_{k=0}P(N=k)
+$$
+```{r callsA}
+1 - (exp(-3) + 3 * exp(-3) + (9 * exp(-3)) / 2 + (27 * exp(-3)) / 6)
+```
+
+### Part B: 
+
+As previously calculated:
+
+$$
+P(N=0)=e^{-3}=0.0498
+$$
+
+### Part C: 
+
+$$
+e^{-\frac{1}{10}(x)(60)}=0.01
+$$
+$$
+x=\frac{4.605(10)}{6}=7.68\ hours
+$$
+
+### Part D:
+
+$$
+P(no\ calls\ in\ 120m)=e^{-\frac{1}{10}(120)}=0.00000614
+$$
+
+## Question 2
+
+### Part A: CDF
+
+$$
+F(x)=\int^x_1\frac{2}{t^3}dt=[-\frac{1}{t^2}] \Big|^x_1=-\frac{1}{x^2}+1,\ for\ x>1
+$$
+
+\[ F(x)= \begin{cases} 
+      0 & x\leq 1 \\
+      1-\frac{1}{x^2} & x>1
+   \end{cases}
+\]
+
+
+### Part B: Mean
+
+$$
+\mu=\int^\infty_1x(\frac{2}{x^3})dx=-2[\frac{1}{x}]\Big|^\infty_1=2
+$$
+
+### Part C: Variance
+
+$$
+Var(X)=E[X^2]-(E[X])^2
+$$
+
+$$
+E[X^2]=\int^\infty_1x^2(\frac{2}{x^3})dx=\int^\infty_1\frac{2}{x}dx=[2ln(x)]\Big|^\infty_1=\infty
+$$
+Therefore, since $E[X^2]=\infty$, the variance is infinite. 

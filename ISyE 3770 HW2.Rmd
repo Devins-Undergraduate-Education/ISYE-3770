@@ -1,0 +1,200 @@
+---
+title: "ISyE 3770 HW2"
+author: "Devin Fromond"
+date: "2024-09-10"
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
+
+## Problem 2.5.4
+
+### Part A:
+
+We find the probability that the failure involves a gas leak by calculating the sum of all failures involving a gas leak over the total number of failures. Therefore, we have:
+
+\[
+\frac{55 + 32}{55 + 32 + 17 + 3} = \frac{87}{107}
+\]
+
+```{r gasLeakA}
+87 / 107
+```
+
+### Part B:
+
+We search for $P(A|B)$, where A is evidence of electrical failure and B is a gas leak. Therefore, we know by the definition of conditional probability:
+
+\[
+P(A|B)=\frac{P(A\cap B)}{P(B)}=\frac{55}{55+32}
+\]
+
+```{r gasLeakB}
+55/(55+32)
+```
+
+### Part C:
+
+Similarly to Part Two, we now search for $P(B|A)$, using A and B as defined above. 
+
+\[
+P(B|A)=\frac{P(B\cap A)}{P(A)}=\frac{55}{55+17}
+\]
+
+```{r gasLeakC}
+55/(55+17)
+```
+
+## Problem 2.5.6
+
+### Part A:
+
+We wish to find $P(B|A)$, where A is the first OJ selected being defective and B is the second one selected is defective. Therefore, we know $P(A)=\frac{5}{500}$. Similarly, find $P(B|A)=\frac{4}{499}$ since there exists 499 possible OJ containers left with 4 being defective. 
+
+```{r orangeJuiceA}
+4/499
+```
+
+### Part B:
+
+We wish to find the probability of A and B. Therefore, we have $P(A\cap B)=P(A)*P(B|A)=\frac{5}{500}*\frac{4}{499}$.
+
+```{r orangeJuiceB}
+(5/500)*(4/499)
+```
+
+### Part C: 
+
+We wish to find the probability that the first two are acceptable. Therefore, we wish to find $P(A'\cap B')=P(A')*P(B'|A')=\frac{495}{500}*\frac{494}{499}$
+
+```{r orangeJuiceC}
+(495/500)*(494/499)
+```
+
+### Part Extra:
+
+The probability of the second one being defective is expressed as $P(B)=P(B\cap A)+P(B\cap A')=P(B|A)*P(A)+P(B|A')*P(A')$. Using previously found values, we have $P(B)=\frac{4}{499}*\frac{5}{500}+\frac{495}{500}*\frac{5}{499}$. 
+
+```{r orangeJuiceExtra}
+(4/499)*(5/500)+(495/500)*(5/499)
+```
+
+## Problem 2.6.3
+
+We will define A as the state of being dry and B as the electrical connector failing. Therefore, we are searching for $P(B)$ which we find using the following: \newline
+
+$P(B)=P(B|A)*P(A)+P(B|A')*P(A')$
+
+We know $P(A)=0.90$ and $P(A')=0.10$ from the problem. Furthermore, we have $P(B|A)=0.01$ and $P(B|A')=0.05$. Therefore, we find:
+$P(B)=0.01(0.90)+0.05(0.10)$
+```{r electricalConnectors}
+(0.01*0.90)+(0.05*0.10)
+```
+
+## Problem from Notes
+
+Requirements: 8 characters, 26 lowercase, 26 uppercase, 10 integers
+
+### Part A:
+
+To find $P(A|B')$, we must first find $P(B')=1-P(B)=1-\frac{10^8}{62^8}$. Therefore, we find:
+$P(A|B')=\frac{P(A\cap B)}{P(B')}=\frac{P(A)}{P(B')}=\frac{\frac{52^8}{62^8}}{1-\frac{10^8}{62^8}}$
+
+```{r passwordA}
+(52^8/62^8)/(1-(10^8/62^8))
+```
+
+### Part B:
+
+We find $P(A'\cap B)=P(B)$ since $B$ and not $A$ is $B$. Therefore, we find:
+$P(B)=\frac{10^8}{62^8}$
+
+```{r passwordB}
+10^8/62^8
+```
+
+### Part C:
+
+We wish to find $P($password contains exactly 2 integers given that it contains at least 1 integer$)$. We will let A represent exactly two integers and B represent at least one integer. Therefore, we have the form $P(A|B')$. We wish to solve $\frac{P(A\cap B')}{P(B')}$. We know $P(A\cap B')=P(A)$ since a password containing two integers already contains at least one integer. Additionally, we find $P(B')=1-P(B)=1-\frac{52^6}{62^6}.$ Therefore, we have:
+$\frac{P(A)}{P(B')}=\frac{\frac{\binom{8}{2}*10^2*52^6}{62^8}}{1-\frac{52^8}{62^8}}$.
+
+```{r passwordC}
+((choose(8,2)*10^2*52^6)/(62^8))/(1-(52^8/62^8))
+```
+
+## Problem 2.7.4
+
+To determine if events $A$ and $B$ are independent, we must prove the following:
+
+$P(A|B)=P(A)$ \newline
+
+$P(B|A)=P(B)$ \newline
+
+$P(A\cap B)=P(A)*P(B)$ \newline
+
+We begin by attempting to prove the first statement. We have the following:
+$P(A|B)=\frac{P(A\cap B)}{P(B)}=\frac{70}{79}$. We find $P(A)=\frac{86}{100}$.
+
+```{r disk}
+70/79
+86/100
+```
+
+Therefore, sine $P(A|B) \neq P(A)$, we find the two events $A$ and $B$ are not independent. 
+
+## Problem 2.8.9
+
+### Part A:
+We find $P(free)=0.20(0.60)+0.80(0.04)$
+
+```{r emailA}
+(0.20*0.60)+(0.80*0.04)
+```
+
+### Part B:
+We wish to find $P(spam|free)$. Therefore, using Bayes Theorem, we have:
+$P(spam|free)=\frac{P(free|spam)*P(spam)}{P(free)}$=$\frac{0.60*0.2}{0.20(0.60)+0.80(0.04)}$
+
+```{r emailB}
+(0.60*0.2)/(0.20*0.60+0.80*0.04)
+```
+
+### Part C: 
+
+We wish to find $(P(spam'|free'))$. We will similarly utilize Bayes Theorem and produce:
+$(P(spam'|free'))=\frac{P(free'|spam')*P(spam')}{P(free')}=\frac{(1-0.04)*0.80}{1-0.152}$
+
+```{r emailC}
+(1-0.04)*0.08/(1-0.152)
+```
+
+## Question Two
+
+Given $A$ and $B$ are independent, we will prove $A'$ and $B'$ are also independent. 
+
+\[
+P(A\cap B)=P(A)*P(B)=P(A)+P(B)-P(A\cup B)
+\]
+
+\[
+P(A\cup B)=P(A)+P(B)-P(A)P(B)
+\]
+
+By definition of the inverse, we have:
+
+\[
+P(A')=1-P(A) and P(B')=1-P(B)
+\]
+
+\[
+P(A')P(B')=1-P(A)-P(B)+P(A)P(B)
+\]
+
+Therefore, we have:
+
+\[
+P(A'\cap B')=P(A')P(B')
+\]
+
+And so, by definition of independence, we know $A'$ and $B'$ are independent.

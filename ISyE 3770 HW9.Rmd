@@ -1,0 +1,293 @@
+---
+title: "ISyE 3770 HW9"
+author: "Devin Fromond"
+date: "2024-11-24"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Problem 9.1.10
+
+### Part A
+
+We begin by calculating the Standard Error of the mean:
+$$
+SE=\frac{\sigma}{\sqrt{n}}=\frac{0.25}{\sqrt{8}}=0.08839
+$$
+
+We fine the Z-Scores to be:
+$$
+Z_1=\frac{4.85-5}{SE}=-1.697
+$$
+$$
+Z_2=\frac{5.15-5}{SE}=1.697
+$$
+
+Therefore, we find $\alpha$ to be:
+$$
+\alpha=2(P(Z<-1.697))=2(0.0449)=0.0898
+$$
+
+Finally, we arrive at our answer of $\alpha = 0.0898$.
+
+### Part B
+
+We will use R to calculate the new Z-Scores. 
+
+```{r 9110}
+SE = 0.08839
+z1_prime <- (4.85 - 5.1) / SE
+z2_prime <- (5.15 - 5.1) / SE
+pnorm(z1_prime) + (1 - pnorm(z2_prime))
+```
+
+## Problem 9-23 [NOTES]
+
+### Part A
+
+We calculate the Z-Score to be the following:
+$$
+Z=\frac{5.2-5}{SD}=2.2627
+$$
+Therefore, we find the P-Value to be:
+$$
+P(Z \geq 2.2627)=1-P(Z \leq 2.2627)=1-0.9881=0.0119
+$$
+$$
+PValue=2(0.0119)=0.0238
+$$
+Therefore, we find the P-Value is $0.0238$.
+
+### Part B
+
+We use similar logic as in Part A.
+$$
+Z=\frac{4.7-5}{SD}=-3.395
+$$
+We find the P-Value to be calculated as:
+$$
+P(Z \leq -3.395)=0.00034
+$$
+$$
+PValue=2(0.00034)=0.00068
+$$
+
+### Part C 
+
+We calculate the Z-Score to be: 
+$$
+Z=\frac{5.1-5}{SD}=1.131
+$$
+We calculate the P-Value:
+$$
+P(Z \geq 1.131)=1-P(Z \leq 1.131)=1-0.8710=0.1290
+$$
+$$
+PValue=2(0.1290)=0.2580
+$$
+
+## Problem 9.2.6
+
+### Part A 
+
+We begin by calculating the Standard Error:
+$$
+SE=\frac{0.8}{\sqrt{15}}=0.23238
+$$
+Now, we calculate the Z-Score:
+$$
+Z=\frac{2.78-3}{0.23238}=-0.946
+$$
+We find that $Z_{\alpha / 2}=\pm 1.96$.
+Since $|Z|=0.946<1.96$, we fail to reject the null hypothesis. 
+
+$$
+PValue=2(P(Z \leq -0.946))=2(0.1720)=0.3440
+$$
+
+### Part B
+
+We will use Z to make this problem easier... 
+
+```{r 926}
+# Givens 
+mu0 <- 3
+xbar <- 2.78
+sigma <- 0.9
+n <- 15
+alpha <- 0.05 
+
+SE <- sigma / sqrt(n)
+
+Z <- (xbar - mu0) / SE
+p_value <- 2 * pnorm(-abs(Z)) 
+
+Z_alpha <- qnorm(1 - alpha/2)
+
+# Calculate critical sample means
+xbar_lower <- mu0 - Z_alpha * SE
+xbar_upper <- mu0 + Z_alpha * SE
+
+mu_alt <- 3.25
+
+# Calculate Z lower and Z upper
+Z_L <- (xbar_lower - mu_alt) / SE
+Z_U <- (xbar_upper - mu_alt) / SE
+
+# Calculate power
+pnorm(Z_L) + (1 - pnorm(Z_U))
+```
+
+Therefore, we observe a final answer of $0.18951$ for the test's power. 
+
+## Problem 9.3.8
+
+### Part A
+
+We begin by calculating the sample statistics using R. 
+
+```{r 938}
+rainfall <- c(18.0, 30.7, 19.8, 27.1, 22.3, 18.8, 31.8, 23.4, 21.2, 27.9, 31.9, 27.1, 25.0, 24.7, 26.9, 21.8, 29.2, 34.8, 26.7, 31.6)
+
+n <- length(rainfall)
+
+mean_rainfall <- mean(rainfall)
+
+sd_rainfall <- sd(rainfall)
+
+mean_rainfall
+sd_rainfall
+```
+
+Now, we calculate the standard error:
+$$
+SE=\frac{4.7847}{\sqrt{20}}=1.0694
+$$
+
+Now, we calculate the test statistic:
+$$
+t=\frac{26.035-25}{1.0694}=0.9675
+$$
+We then calculate the critical t-value and p-value using R:
+```{r 9381}
+t <- (26.035 - 25) / 1.0694 
+alpha <- 0.01
+df <- n - 1
+t_crit <- qt(1 - alpha, df)
+t_crit
+
+p_value <- 1 - pt(t, df)
+p_value
+```
+
+Since $t=0.9675 < 2.539$ and $PValue=0.1726>\alpha=0.01$, we fail to reject the null hypothesis. 
+
+### Part B
+
+```{r plot}
+rainfall <- c(18.0, 30.7, 19.8, 27.1, 22.3, 18.8, 31.8, 23.4, 21.2, 27.9, 31.9, 27.1, 25.0, 24.7, 26.9, 21.8, 29.2, 34.8, 26.7, 31.6)
+
+qqnorm(rainfall, main = "Q-Q Plot of Rainfall Data")
+qqline(rainfall, col = "blue")
+
+shapiro_test <- shapiro.test(rainfall)
+
+shapiro_test
+```
+
+We observe $W=0.97025$ and $PValue=0.7601$, therefore, since the P-Value is greater than the common significance level, we fail to reject the null hypothesis. 
+
+We find the data follows a normal distribution. 
+
+### Part E
+
+We can construct a one-tailed CI at 99% CI ($\alpha =0.01$) with $df=19$.
+$$
+t_{0.99,19}=2.539
+$$
+Now, we find the lower confidence bound:
+$$
+26.035-(2.539)(1.0694)=26.035-2.719=23.316
+$$
+
+Therefore, we are 99% confident the true mean rainfall is greater than or equal to 23.316 acre-feet. 
+Since the lower confidence bound is less than the hypothesized mean, we cannot be 99% confident that the true mean exceeds 25 acre-feet. 
+
+## Problem 9.4.3
+
+### Part A
+
+We will use R to speed up calculations:
+```{r 943}
+chi_sq_stat <- (16 * 0.75^2) / (0.09^2)
+p_value <- 1 - pchisq(chi_sq_stat, df = 16)
+p_value
+```
+
+Since we find the p-value to be approximately 0, we find this value to be less than the significance level of $\alpha =0.05$ and therefore reject the null hypothesis. 
+
+Therefore, we find there is strong significance to conclude the std dev. of performance time exceeds 0.09 seconds. Since the p-value is approximately 0, we observe it is a statistically significant result. 
+
+### Part B
+
+We will again use R to simplify calculations:
+```{r 9432}
+chi_sq_critical <- qchisq(0.05, df = 16, lower.tail = FALSE)
+lower_limit_variance <- (16 * 0.75^2) / chi_sq_critical
+lower_limit_sigma <- sqrt(lower_limit_variance)
+lower_limit_sigma
+```
+
+The 95% one-sided confidence interval shows the true std dev. is at least 0.585 seconds with 95% confidence. Since the standard deviation is below this lower limit, we find it is plausible the current standard deviation exceeds this value.
+
+We find that $0.585 > 0.09$ seconds, so we find supporting evidence from the conclusion of part (a).
+
+## Problem 9.5.4
+
+### Part A
+
+We begin by calculating SE from $\hat{p}=\frac{117}{484}=0.2417$.
+$$
+SE=\sqrt{\frac{(0.5)(0.5)}{484}}=0.0227
+$$
+
+We find the following:
+$$
+z=\frac{0.2417-0.5}{0.0227}=-11.38
+$$
+
+We calculate the p-value:
+```{r 954}
+p_value <- 2 * pnorm(-11.38)
+p_value
+```
+
+Since the P-Value is less than the significance level of $\alpha =0.05$, we reject the null hypothesis. 
+
+Therefore, we find the data from Eng. Horizons are not consistent with Fortune's claim. We find the p-value is approximately zero which shows a statistically significant difference. 
+
+### Part B
+
+We use R to make calculations better...
+
+```{r 9542}
+n <- 484
+x <- 117
+p_hat <- x / n
+p0 <- 0.5
+SE <- sqrt(p0 * (1 - p0) / n)
+z <- (p_hat - p0) / SE
+p_value <- 2 * pnorm(z) 
+
+SE_p_hat <- sqrt(p_hat * (1 - p_hat) / n)
+z_star <- qnorm(0.975)
+lower_limit <- p_hat - z_star * SE_p_hat
+upper_limit <- p_hat + z_star * SE_p_hat
+confidence_interval <- c(lower_limit, upper_limit)
+confidence_interval
+```
+
+The Fortune's claim is $p=0.5$. Since this value is not within the 95% CI calculated above, we find that engineers furthering their education is significantly different than 50%. 
+
+Therefore, we conclude that the data are inconsistent with the claim. 

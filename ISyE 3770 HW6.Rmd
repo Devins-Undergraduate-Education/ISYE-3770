@@ -1,0 +1,160 @@
+---
+title: "ISyE 3770 HW6"
+author: "Devin Fromond"
+date: "2024-10-24"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Problem 6.1.6
+
+We observe the sample mean is the average across all data points:
+
+$$
+\bar{x}=\frac{\sum^n_{i=1}x_i}{n}
+$$
+
+Therefore, we have the following:
+
+```{r Mean}
+0.19 + 0.78 + 0.96 + 1.31 + 2.78 + 3.16 + 4.15 + 4.67 + 4.85 + 6.50 + 7.35 + 8.01 + 8.27 + 12.06 + 31.75 + 32.52 + 33.91 + 36.71 + 72.89
+
+```
+
+$$
+\bar{x}=\frac{272.82}{19}=14.359
+$$
+
+We observe the sample standard distribution is defined as the following:
+
+$$
+s=\sqrt{\frac{\sum^n_{i=1}(x_i-\bar{x})^2}{n-1}}
+$$
+
+We will use R to speed up the process...
+```{r STD DEV}
+breakdown_times <- c(0.19, 0.78, 0.96, 1.31, 2.78, 3.16, 4.15, 4.67, 4.85, 6.50, 
+                    7.35, 8.01, 8.27, 12.06, 31.75, 32.52, 33.91, 36.71, 72.89)
+
+variance <- sum((breakdown_times - 14.359)^2) / 18
+sqrt(variance)
+```
+
+
+## Problem 6.2.4
+
+
+Let's start with the stem-and-leaf plot:
+```{r OctaneLeaf}
+octane_ratings <- c(
+  88.5, 98.8, 89.6, 92.2, 92.7, 88.4, 87.5, 90.9,
+  94.7, 88.3, 90.4, 83.4, 87.9, 92.6, 87.8, 89.9,
+  84.3, 90.4, 91.6, 91.0, 93.0, 93.7, 88.3, 91.8,
+  90.1, 91.2, 90.7, 88.2, 94.4, 96.5, 89.2, 89.7,
+  89.0, 90.6, 88.6, 88.5, 90.4, 84.3, 92.3, 92.2,
+  89.8, 92.2, 88.3, 93.3, 91.2, 93.2, 88.9,
+  91.6, 87.7, 94.2, 87.4, 86.7, 88.6, 89.8,
+  90.3, 91.1, 85.3, 91.1, 94.2, 88.7, 92.7,
+  90.0, 86.7, 90.1, 90.5, 90.8, 92.7, 93.3,
+  91.5, 93.4, 89.3, 100.3, 90.1, 89.3, 86.7,
+  89.9, 96.1, 91.1, 87.6, 91.8, 91.0, 91.0
+)
+
+stem(sort(octane_ratings), scale = 2)
+```
+
+Now, we can calculate the median and quartiles:
+
+```{r OctaneMedandQuart}
+median_octane <- median(octane_ratings)
+quartiles <- quantile(octane_ratings, type=6)
+
+median_octane
+quartiles
+```
+
+## Problem 6.3.2
+
+```{r frequency-distribution}
+library(dplyr)
+library(knitr)
+
+octane_ratings <- c(
+  88.5, 98.8, 89.6, 92.2, 92.7, 88.4, 87.5, 90.9,
+  94.7, 88.3, 90.4, 83.4, 87.9, 92.6, 87.8, 89.9,
+  84.3, 90.4, 91.6, 91.0, 93.0, 93.7, 88.3, 91.8,
+  90.1, 91.2, 90.7, 88.2, 94.4, 96.5, 89.2, 89.7,
+  89.0, 90.6, 88.6, 88.5, 90.4, 84.3, 92.3, 92.2,
+  89.8, 92.2, 88.3, 93.3, 91.2, 93.2, 88.9,
+  91.6, 87.7, 94.2, 87.4, 86.7, 88.6, 89.8,
+  90.3, 91.1, 85.3, 91.1, 94.2, 88.7, 92.7,
+  90.0, 86.7, 90.1, 90.5, 90.8, 92.7, 93.3,
+  91.5, 93.4, 89.3, 100.3, 90.1, 89.3, 86.7,
+  89.9, 96.1, 91.1, 87.6, 91.8, 91.0, 91.0
+)
+
+num_bins <- 8
+breaks <- seq(floor(min(octane_ratings)), ceiling(max(octane_ratings)), length.out = num_bins + 1)
+hist_result <- hist(octane_ratings, breaks = breaks, plot = FALSE)
+freq <- hist_result$counts
+
+bins <- paste0(head(breaks, -1), " \\( \\leq x < \\) ", tail(breaks, -1))
+
+bins[length(bins)] <- paste0(breaks[num_bins], " \\( \\leq x \\leq \\) ", breaks[num_bins + 1])
+
+relative_freq <- freq / sum(freq)
+cumulative_relative_freq <- cumsum(relative_freq)
+
+freq_table <- data.frame(
+  Class = bins,
+  Frequency = freq,
+  `Relative Frequency` = round(relative_freq, 4),
+  `Cumulative Relative Frequency` = round(cumulative_relative_freq, 4)
+)
+
+kable(freq_table, caption = "Frequency Distribution of Motor Fuel Octane Ratings")
+
+hist(octane_ratings, breaks = breaks, col = "skyblue", border = "black",
+     main = "Histogram of Motor Fuel Octane Ratings",
+     xlab = "Octane Rating",
+     ylab = "Frequency")
+```
+
+## Problem 6.4.9
+
+```{r bigData}
+library(ggplot2)
+
+data <- read.table("C:/Users/devin/OneDrive/Documents/Georgia_Tech/6-81.txt", header = TRUE)
+
+ggplot(data, aes(x = Group, y = Expression)) +
+  geom_boxplot(fill = "skyblue", color = "black") +
+  labs(title = "Gene Expression for Different Treatment Groups",
+       x = "Group",
+       y = "Gene Expression") +
+  theme_minimal()
+```
+
+The HighDose displays lower gene expression levels than the control groups. 
+The control groups demonstrate greater variability in gene expression; Control3 has multiple outliers which skew the data.
+
+## Problem 6.7.2
+
+```{r MORE OCTANE}
+library(ggplot2)
+
+ggplot(data.frame(octane_ratings), aes(sample = octane_ratings)) +
+  stat_qq() +
+  stat_qq_line(color = "red") +
+  labs(title = "Normal Prob Plot of Octane Ratings",
+       x = "Theoretical Quantiles",
+       y = "Sample Quantiles") +
+  theme_minimal()
+```
+
+Points which lie approximately on the red line indicate a normal distribution. 
+
+Points which deviate from the red line suggest deviations from a normal distribution. 
+
+Since most of the points lie approximately on the red line, we can conclude the octane rating is normally distributed. 

@@ -1,0 +1,400 @@
+---
+title: "ISyE 3770 HW7"
+author: "Devin Fromond"
+date: "2024-11-05"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Problem 7.2.6
+
+We begin by calculating the standard error of the sample mean:
+$$
+SE=\frac{\sigma}{\sqrt(n)}=\frac{1.5}{\sqrt{49}}=0.2143\ minutes
+$$
+
+We then calculate the Z score:
+$$
+Z=\frac{\bar{X}-\mu}{SE}
+$$
+
+### Part A
+$$
+Z=\frac{10-8.2}{0.2143}=8.4
+$$
+
+We observe that 8.4 standard deviations above the mean is high and therefore, the probability of $Z=8.4$ is approximately 1.
+
+Thus, we have $P(\bar{X}<10)\approx 1$.
+
+### Part B
+$$
+Z_u=\frac{5-8.2}{0.2143}=-14.93
+$$
+$$
+Z_l=\frac{10-8.2}{0.2143}=8.4
+$$
+
+Since $Z=-14.93$ is very low and $Z=8.4$ is very high, the probability between these two scores is approximately one.
+
+Therefore, we have: $P(5<\bar{X}<10)\approx 1$.
+
+### Part C
+$$
+Z=\frac{6-8.2}{0.2143}=-10.27
+$$
+
+Since $Z=-10.27$ is very low, the probability corresponding to this Z-Score is approximately zero. 
+
+Therefore, we have $P(\bar{X}<6)\approx 0$.
+
+## 7.3.7
+
+### Part A
+
+We observe $\bar{X}=\frac{\sum^n_{i=1}x_i}{n}$, with $n=24. 
+
+Therefore, we have the following:
+$$
+\sum^n_{i=1} x_i=10160
+$$
+```{r oxideThickness}
+oxide_thickness <- c(425, 431, 416, 419, 421, 436, 418, 410, 431, 433, 
+                     423, 426, 410, 435, 436, 428, 411, 426, 409, 437, 
+                     422, 428, 413, 416)
+
+sum(oxide_thickness)
+```
+
+
+$$
+\bar{X}=\frac{10160}{24}=423.33\ angstroms
+$$
+
+### Part B
+
+$$
+s=\sqrt{\frac{\sum^n_{i=1}(x_i-\bar{X})^2}{n-1}}
+$$
+
+```{r devOxide}
+oxide_thickness <- c(425, 431, 416, 419, 421, 436, 418, 410, 431, 433, 
+                     423, 426, 410, 435, 436, 428, 411, 426, 409, 437, 
+                     422, 428, 413, 416)
+
+mean_oxide_thickness <- mean(oxide_thickness)
+sum((oxide_thickness - mean_oxide_thickness)^2)
+```
+
+$$
+s=\sqrt{\frac{1897.33}{24-1}}=9.082\ angstroms
+$$
+
+### Part C
+
+$$
+SE=\frac{s}{\sqrt{n}}
+$$
+
+$$
+SE=\frac{9.082}{\sqrt{24}}=1.854\ angstroms
+$$
+
+### Part D
+
+When we organize the set, we find the 12th value is 423 and the 13th value is 425. Therefore, we have the following:
+$$
+median=\frac{423+425}{2}=424\ angstroms
+$$
+
+### Part E
+
+We define $p$ to be the following:
+$$
+p=\frac{(\#\ wafers\ with\ thickness > 430)}{n}
+$$
+
+Therefore, we have $p=\frac{7}{24}=0.2917$.
+
+## Problem 7.3.9
+
+### Part A
+
+We wish to show $E[\bar{X_1}-\bar{X_2}]=\mu_1-\mu_2$.
+
+Since $\bar{X_1}$ is the sample mean for population 1, we have $E[\bar{X_1}]=\mu_1$. Population 2 follows this same trend: $E[\bar{X_2}]=\mu_2$. 
+
+Therefore, we see the following:
+$$
+E[\bar{X_1}-\bar{X_2}]=E[\bar{X_1}]-E[\bar{X_2}]=\mu_1-\mu_2
+$$
+
+We find $\bar{X_1}-\bar{X_2}$ is an unbiased estimator of $\mu_1-\mu_2$.
+
+### Part B
+
+We find the following:
+$$
+Var[\bar{X_1}]=\frac{\sigma^2_1}{n_1}
+$$
+$$
+Var[\bar{X_2}]=\frac{\sigma^2_2}{n_2}
+$$
+
+We find the variance of the difference of two ind. estimators is the sum of their variances. 
+$$
+Var[\bar{X_1}-\bar{X_2}]=Var[\bar{X_1}]+Var[\bar{X_2}]=\frac{\sigma_1^2}{n_1}+\frac{\sigma_2^2}{n_2}
+$$
+
+$$
+SE[\bar{X_1}-\bar{X_2}]=\sqrt{Var[\bar{X_1}]+Var[\bar{X_2}]}=\sqrt{\frac{\sigma_1^2}{n_1}+\frac{\sigma_2^2}{n_2}}
+$$
+
+We can estimate the standard error using the sample variances $S^2_1\ and\ S^2_2$ in place of $\sigma^2_1\ and\ \sigma^2_2$.
+
+### Part C
+
+For each sample variance, we have the following:
+$$
+E[S^2_i]=\sigma^2,\ for\ i=1,2
+$$
+
+We further compute the expected value: 
+$$
+E[(n_1-1)S^2_1+(n_2-1)S^2_2]=(n_1-1)E[S^2_1]+(n_2-1)E[S^2_2]
+$$
+
+With simple substitution, we have the following:
+$$
+(n_1-1)\sigma^2+(n_2-1)\sigma^2=((n_1-1)+(n_2-1))\sigma^2=(n_1+n_2-2)\sigma^2
+$$
+
+Finally, we have: 
+$$
+E[S^2_p]=\frac{E[n_1-1)S^2_1+(n_2-1)S^2_2]}{n_1+n_2-2}=\frac{(n_1+n_2-2)\sigma^2}{n_1+n_2-2}=\sigma^2
+$$
+
+Therefore, we find $S^2_p$ is an unbiased estimator of $\sigma^2$ when $\sigma^2_1=\sigma^2_2=\sigma^2$.
+
+## Problem 7.3.11
+
+### Part A
+
+We wish to show $E[\frac{X_1}{n_1}-\frac{X_2}{n_2}]=p_1-p_2$.
+
+Since $X_1\ and\ X_2$ follows a binomial distribution, we have the following: 
+$$
+E[\frac{X_1}{n_1}]=\frac{E[X_1]}{n_1}=\frac{n_1p_1}{n_1}=p_1
+$$
+$$
+E[\frac{X_2}{n_2}]=\frac{E[X_2]}{n_2}=\frac{n_2p_2}{n_2}=p_2
+$$
+
+We compute the following: 
+$$
+E[\frac{X_1}{n_1}-\frac{X_2}{n_2}]=E[\frac{X_1}{n_1}]-E[\frac{X_2}{n_2}]=p_1-p_2
+$$
+
+Therefore, we find $\frac{X_1}{n_1}-\frac{X_2}{n_2}$ is an unbiased estimator of $p_1-p_2$.
+
+### Part B
+
+$$
+Var[\hat{p_1}]=\frac{p_1(1-p_1)}{n_1}
+$$
+$$
+Var[\hat{p_2}]=\frac{p_2(1-p_2)}{n_2}
+$$
+
+We take the variance of the difference to have:
+$$
+Var[\hat{p_1}-\hat{p_2}]=Var[\hat{p_1}]+Var[\hat{p_2}]=\frac{p_1(1-p_1)}{n_1}+\frac{p_2(1-p_2)}{n_2}
+$$
+
+Therefore, we have a standard error of: 
+
+$$
+SE=\sqrt{Var[\hat{p_1}-\hat{p_2}]}=\sqrt{\frac{p_1(1-p_1)}{n_1}+\frac{p_2(1-p_2)}{n_2}}
+$$
+
+### Part C
+
+We replace $p_1$ and $p_2$ with $\hat{p_1}$ and $\hat{p_2}$ which are the sample proportions to result in:
+$$
+SE_{estimate}=\sqrt{\frac{\hat{p_1}(1-\hat{p_1})}{n_1}+\frac{\hat{p_2}(1-\hat{p_2})}{n_2}}
+$$
+
+It is important we define $\hat{p_i}=\frac{X_i}{n_i}$.
+
+### Part D
+
+We compute the sample proportions:
+
+ASU: $\hat{p_1}=\frac{X_1}{n_1}=\frac{150}{200}=0.75$
+
+VT: $\hat{p_2}=\frac{X_2}{n_2}=\frac{185}{250}=0.74$
+
+Therefore, an estimate of $p_1-p_2$ is the following: 
+$$
+\hat{p_1}-\hat{p_2}=0.75-0.74=0.01
+$$
+
+### Part E
+
+We compute each variance component:
+
+$$
+Var[\hat{p_1}]=\frac{0.75(0.25)}{200}=0.0009375
+$$
+$$
+Var[\hat{p_2}]=\frac{0.74(0.26)}{250}=0.0007696
+$$
+
+Therefore, we have:
+$$
+Var[\hat{p_1}-\hat{p_2}]=0.0009375+0.0007696=0.0017071
+$$
+
+Which means the standard error is $\sqrt{0.0017071}=0.04132$.
+
+## Problem 7.4.1
+
+We define $L(p)$ as the following:
+$$
+L(p) = \prod_{i=1}^{n} f(X_i) = \prod_{i=1}^{n} p(1 - p)^{X_i - 1}
+$$
+Simplifying the product:
+$$
+L(p) = p^n \times \prod_{i=1}^{n} (1 - p)^{X_i - 1} = p^n (1 - p)^{\sum_{i=1}^{n} (X_i - 1)} = p^n (1 - p)^{S - n}
+$$
+where $S = \sum_{i=1}^{n} X_i$.
+
+We now take the natural log:
+$$
+\ell(p) = \ln L(p) = n \ln p + (S - n) \ln(1 - p)
+$$
+
+Now, we take the derivative with respect to $p$:
+$$
+\frac{d\ell(p)}{dp} = \frac{n}{p} - \frac{S - n}{1 - p}
+$$
+
+Finally, we set the derivative equal to zero: 
+
+$$
+\frac{n}{p} - \frac{S - n}{1 - p} = 0
+$$
+$$
+n(1 - p) - (S - n)p = 0
+$$
+$$
+n - np - Sp + np = n - Sp = 0
+$$
+$$
+n = Sp \quad \Rightarrow \quad \hat{p} = \frac{n}{S}
+$$
+
+Therefore, we arrive at our final answer of:
+$$
+\hat{p} = \frac{n}{\sum_{i=1}^{n} X_i}
+$$
+
+
+## Question Two
+
+### Part A
+For a normal distribution, we have:
+$$
+\text{E}[\bar{X}_n] = \mu, \quad \text{Var}(\bar{X}_n) = \frac{\sigma^2}{n}
+$$
+$$
+\text{E}[\bar{Y}_m] = \mu, \quad \text{Var}(\bar{Y}_m) = \frac{\sigma^2}{m}
+$$
+
+We compute $\text{E}[\hat{\mu}_1]$:
+$$
+\text{E}[\hat{\mu}_1] = \text{E}\left[ \frac{\bar{X}_n + \bar{Y}_m}{2} \right] = \frac{\text{E}[\bar{X}_n] + \text{E}[\bar{Y}_m]}{2} = \frac{\mu + \mu}{2} = \mu
+$$
+
+Similarly, we now compute $\text{E}[\hat{\mu}_2]$:
+$$
+\text{E}[\hat{\mu}_2] = \text{E}\left[ \frac{n \bar{X}_n + m \bar{Y}_m}{n + m} \right] = \frac{n \text{E}[\bar{X}_n] + m \text{E}[\bar{Y}_m]}{n + m} = \frac{n \mu + m \mu}{n + m} = \mu
+$$
+
+Therefore, we find both estimators $\hat{\mu}_1$ and $\hat{\mu}_2$ are unbiased estimators of $\mu$.
+
+### Part B
+
+We first calculate the variance of $\hat{\mu_1}$. Since $\bar{X}_n$ and $\bar{Y}_m$ are independent:
+$$
+\text{Var}(\hat{\mu}_1) = \text{Var}\left( \frac{\bar{X}_n + \bar{Y}_m}{2} \right) = \left( \frac{1}{2} \right)^2 \left[ \text{Var}(\bar{X}_n) + \text{Var}(\bar{Y}_m) \right] = \frac{1}{4} \left( \frac{\sigma^2}{n} + \frac{\sigma^2}{m} \right)
+$$
+$$
+\text{Var}(\hat{\mu}_1) = \frac{\sigma^2}{4} \left( \frac{1}{n} + \frac{1}{m} \right).
+$$
+
+Now, we find the variance of $\hat{\mu}_2$:
+$$
+\hat{\mu}_2 = \frac{n}{n + m} \bar{X}_n + \frac{m}{n + m} \bar{Y}_m
+$$
+Let $a = \dfrac{n}{n + m}$ and $b = \dfrac{m}{n + m}$.
+
+Since $\bar{X}_n$ and $\bar{Y}_m$ are independent:
+
+$$
+\text{Var}(\hat{\mu}_2) = a^2 \text{Var}(\bar{X}_n) + b^2 \text{Var}(\bar{Y}_m) = \left( \frac{n}{n + m} \right)^2 \frac{\sigma^2}{n} + \left( \frac{m}{n + m} \right)^2 \frac{\sigma^2}{m}
+$$
+$$
+\text{Var}(\hat{\mu}_2) = \frac{n^2 \sigma^2}{(n + m)^2 n} + \frac{m^2 \sigma^2}{(n + m)^2 m} = \frac{n \sigma^2}{(n + m)^2} + \frac{m \sigma^2}{(n + m)^2}
+$$
+$$
+\text{Var}(\hat{\mu}_2) = \frac{\sigma^2}{(n + m)^2} (n + m) = \frac{\sigma^2}{n + m}
+$$
+
+Therefore, we find the following: 
+$$
+\text{Var}(\hat{\mu}_1) = \frac{\sigma^2}{4} \left( \frac{1}{n} + \frac{1}{m} \right), \quad \text{Var}(\hat{\mu}_2) = \frac{\sigma^2}{n + m}
+$$
+
+### Part C
+
+The relative efficiency of $\hat{\mu}_2$ to $\hat{\mu}_1$ is defined as:
+$$
+\text{RE} = \frac{\text{Var}(\hat{\mu}_1)}{\text{Var}(\hat{\mu}_2)}
+$$
+$$
+\text{Var}(\hat{\mu}_1) = \frac{\sigma^2}{4} \left( \frac{1}{n} + \frac{1}{m} \right) = \frac{\sigma^2}{4} \left( \frac{m + n}{n m} \right)
+$$
+$$
+\text{Var}(\hat{\mu}_2) = \frac{\sigma^2}{n + m}
+$$
+
+Now, we compute the relative frequency:
+$$
+\text{RE} = \frac{\text{Var}(\hat{\mu}_1)}{\text{Var}(\hat{\mu}_2)} = \frac{ \dfrac{\sigma^2}{4} \left( \dfrac{m + n}{n m} \right) }{ \dfrac{\sigma^2}{n + m} } = \frac{ \dfrac{\sigma^2 (n + m)}{4 n m} }{ \dfrac{\sigma^2}{n + m} } = \frac{ (n + m)^2 }{ 4 n m }
+$$
+
+Therefore, we arrive at our final answer of:
+$$
+\text{Relative Efficiency} = \frac{ 4 n m }{ (n + m)^2 }
+$$
+
+### Part D
+
+We find that an estimator with a smaller variance has greater efficiency since:
+$$
+\text{RE} = \frac{ \text{Var}(\hat{\mu}_2) }{ \text{Var}(\hat{\mu}_1) } = \frac{ 4 n m }{ (n + m)^2 }
+$$
+
+We observe $4 n m \leq (n + m)^2$ for all positive integers. Therefore:
+$$
+(n + m)^2 \geq 4 n m \implies \frac{4 n m}{(n + m)^2} \leq 1
+$$
+
+We can simply observe RE $\leq 1$, meaning the following:
+$$
+\text{Var}(\hat{\mu}_2) \leq \text{Var}(\hat{\mu}_1).
+$$
+
+Finally, we arrive at our final conclusion of the estimator $\hat{\mu}_2$ has a smaller variance and is therefore more efficient than $\hat{\mu}_1$ based on relative efficiency.

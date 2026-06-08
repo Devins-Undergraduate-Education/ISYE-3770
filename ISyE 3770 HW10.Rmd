@@ -1,0 +1,87 @@
+---
+title: "ISyE 3770 HW10"
+author: "Devin Fromond"
+date: "2024-12-04"
+output:
+  pdf_document: default
+  html_document: default
+---
+## Problem 10.2.6
+
+### Part A
+
+We will utilize Welch's t-test. 
+
+We begin by calculating the standard error:
+$$
+SE=\sqrt{\frac{12^2}{10}+\frac{22^2}{16}}=\sqrt{44.65}=6.682
+$$
+
+Then, we determine the test statistic: 
+$$
+t=\frac{321-290}{6.682}=4.64
+$$
+
+Now, we use R to speed up calculations:
+```{r partA}
+n1 <- 10
+s1 <- 12
+n2 <- 16
+s2 <- 22
+
+numerator <- ( (s1^2 / n1) + (s2^2 / n2) )^2
+
+denominator <- ( ( (s1^2 / n1)^2 ) / (n1 - 1) ) + ( ( (s2^2 / n2)^2 ) / (n2 - 1) )
+
+df <- numerator / denominator
+
+df
+
+t_value <- 4.64
+p_val <- 1- pt(t_value, df)
+p_val
+```
+
+Therefore, since we have a p-value of $0.00005 > 0.05 = \alpha$, we reject the null hypothesis. Therefore, we find there is strong evidence to support the claim that Supplier 2 provides more gears with higher mean impact strength. 
+
+### Part B
+
+We again calculate the test statistic:
+$$
+t=\frac{(321-290)-25}{6.682}=0.898
+$$
+
+```{r partB}
+t_value <- 0.898
+df <- 23.72113
+p_value <- 1 - pt(t_value, df)
+p_value
+```
+
+Since the p-value of $0.1891>0.05=\alpha$, we fail to reject the null hypothesis. Therefore, we find the data does not support the mean impact strength of gears from Supplier 2 is at least 25 ft-lbs higher than that of Supplier 1. 
+
+### Part C
+
+We construct a 95% CI:
+
+```{r partC}
+df <- 23.72113
+alpha <- 0.05
+t_star <- qt(1 - alpha/2, df)
+t_star
+```
+
+We then calculate the margin of error:
+$$
+ME=t*(SE)=2.065(6.682)=13.79833
+$$
+
+Therefore, we observe a CI of:
+$$
+(321-290) \pm 12.79 = 31 \pm 13.79
+$$
+This gives us a lower limit of $17.21$ and an upper limit of $44.79$. Therefore, we find the 95% CI to be $(17.21,44.79)$. 
+
+Since the entire interval is $>0$, it supports the conclusion from Part A. Additionally, since the lower limit is $<25$, it supports the conclusion in Part B. 
+
+The CI suggests the true difference is between 17.21 and 44.79 ft-lbs. 

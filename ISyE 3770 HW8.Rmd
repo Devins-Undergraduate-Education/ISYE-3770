@@ -1,0 +1,305 @@
+---
+title: "ISyE 3770 HW8"
+author: "Devin Fromond"
+date: "2024-11-11"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Problem 8.1.1
+
+### Part A
+
+Given the margin of error is $2.14\frac{\sigma}{\sqrt{n}}$, we easily see $z=2.14$. 
+
+Using a Z-Table, we find the following:
+$$
+P(Z\leq 2.14)\approx 0.9838
+$$
+$$
+P(Z \leq -2.14)\approx 1-0.9838=0.0162
+$$
+$$
+Confidence\ Level=0.9838-0.0162=0.9676\ or\ 96.76%
+$$
+
+### Part B
+
+We observe a Z-Score of $2.49$.
+
+Using a Z-Table, we find the following:
+$$
+P(Z\leq 2.49)\approx 0.9934
+$$
+$$
+P(Z \leq -2.49)\approx 1-0.9934=0.0066
+$$
+$$
+Confidence\ Level=0.9934-0.0066=0.9868\ or\ 98.68%
+$$
+
+### Part C
+
+We observe a Z-Score of $1.85$.
+
+Using a Z-Table, we find the following:
+$$
+P(Z\leq 1.85)\approx 0.9678
+$$
+$$
+P(Z \leq -1.85)\approx 1-0.9678=0.0322
+$$
+$$
+Confidence\ Level=0.9678-0.0322=0.9356\ or\ 93.56%
+$$
+
+### Part D
+
+We recognize this is a one-sided interval. We observe a Z-Score of $2.00$.
+
+Using a Z-Table, we find the following:
+$$
+P(Z\leq 2.00)\approx 0.9772
+$$
+$$
+Confidence\ Level=P(\mu \leq \bar{x}+2.00\frac{\sigma}{\sqrt{n}})=P(Z\leq2.00)=0.9772\ or\ 97.72%
+$$
+
+### Part E
+
+We recognize this is a one-sided interval. We observe a Z-Score of $1.96$.
+
+Using a Z-Table, we find the following:
+$$
+P(Z\leq 1.96)\approx 0.9750
+$$
+$$
+Confidence\ Level=P(\mu \leq \bar{x}-1.96\frac{\sigma}{\sqrt{n}})=P(Z\leq1.96)=0.9750\ or\ 97.50%
+$$
+
+## Problem 8.1.5
+
+### Part A
+
+A higher confidence interval would take longer. Therefore, we find that a 99% CI would be longer than a 95% CI since the interval must be wider to account for greater variability in the sample data.
+
+### Part B
+
+The statement is not correct. For a CI $X%$, we find $X%$ of samples of those intervals would contain the true mean $\mu$. Furthermore, we find $\mu$ is not a random variable, so it is not within a specific interval. The provided statement treats $\mu$ as a random variable.
+
+### Part C
+
+We find the statement to be correct. The statement correctly interprets confidence intervals, as outlined in Part B. Out of 1000 confidence intervals, we would expect $\approx 950$ to include $\mu$, which we find to be consistent with the CI. 
+
+## Problem 8.1.7
+
+### Part A
+
+We find $Z_{0.005}\approx 2.5758$. 
+
+Therefore, we calculate standard error to be:
+$$
+SE=\frac{\sigma}{\sqrt{n}}=\frac{0.001}{\sqrt{15}}=0.0002582mm
+$$
+
+We compute the margin of error to be:
+$$
+ME=Z_{0.005}(SE)=2.5758(0.0002582)=0.000664
+$$
+
+Therefore, we find the CI to be:
+$$
+CI=(74.036-0.000664, 74.036 + 0.000)=(74.0353mm,\ 74.0367mm)
+$$
+
+### Part B
+We find $Z_{0.99}\approx 2.3263$. 
+Therefore, we calculate standard error to be:
+$$
+SE=\frac{\sigma}{\sqrt{n}}=\frac{0.001}{\sqrt{15}}=0.0002582mm
+$$
+
+We compute the margin of error to be:
+$$
+ME=Z_{0.99}(SE)=2.3263(0.0002582)=0.000600
+$$
+
+Therefore, we find the Lower Confidence Bound to be:
+$$
+LCB=74.036-0.000600\approx 74.0354mm
+$$
+
+We find the lower bound of the one-sided 99% confidence bound is slightly greater than that of the two-sided 99% confidence interval. We find this to be logical since the two-sided interval divides the significance level to each tail, thereby making it more conservative. 
+
+## Problem 8.2.10
+
+### Part A
+
+```{r 8.2.10A}
+speedup <- c(3.775302, 3.350679, 4.217981, 4.030324, 4.639692,
+            4.139665, 4.395575, 4.824257, 4.268119, 4.584193,
+            4.930027, 4.315973, 4.600101)
+
+qqnorm(speedup, main="Q-Q Plot of CNN Speedup")
+qqline(speedup, col="red", lwd=2)
+```
+
+Since the data points in the Q-Q plot lie approximately on the red line, we can conclude the speedup of CNN is normally distributed. 
+
+### Part B
+
+We begin by calculating the sample mean:
+$$
+\bar{x}=\frac{\sum x_i}{n}=\frac{56.071888}{13}=4.3132
+$$
+
+We then calculate the sample standard deviation:
+$$
+SST=\sum (x_i-\bar{x})^2=2.2478
+$$
+
+Now, we find the variance to be:
+$$
+S^2=\frac{SST}{n-1}=\frac{2.2478}{12}=0.1873
+$$
+
+The standard deviation is trivial:
+$$
+S=\sqrt{S^2}=0.4328
+$$
+
+Therefore, we can calculate the standard error:
+$$
+SE=\frac{S}{\sqrt{n}}=\frac{0.4328}{\sqrt{13}}=0.1201
+$$
+
+We find the following:
+$$
+t_{\alpha /2, n-1}=t_{0.025,12}=2.179
+$$
+
+Therefore, we find the margin of error to be $2.179(0.1201)=0.2616$. 
+
+Then, the lower limit is calculated by $4.3132-0.2616=4.0515$ and the upper bound is $4.3132+0.2616=4.5748$.
+
+### Part C
+
+Using the values from part B, we simply find the following:
+$$
+t_{\alpha , n-1}=t_{0.05,12}=1.782
+$$
+
+Therefore, we find the margin of error to be $1.782(0.1201)=0.2140$.
+
+Finally, the lower bound is found by $4.3132-0.2140=4.0992$. 
+
+## Problem 8.3.3
+
+We begin by calculating the mean and standard deviation.
+```{r mean_sd}
+temperatures <- c(20.1, 20.7, 20.9, 21.3, 21.6, 21.7, 21.7, 23.3)
+
+mean_temp <- mean(temperatures)
+
+sd_temp <- sd(temperatures)
+
+print(mean_temp)
+print(sd_temp)
+```
+
+For each temperature, we calculate the z-score. 
+```{r zscore}
+z_scores <- (temperatures - mean_temp) / sd_temp
+
+temperature_data <- data.frame(
+  Site = c("Harlquahala", "Laveen", "Maricopa", "Litchfield",
+           "Phoenix Encanto", "Phoenix Greenway", "Waddell", "Sky Harbor Airport"),
+  Temperature_C = temperatures,
+  Z_Score = round(z_scores, 3)
+)
+
+print(temperature_data)
+```
+
+Now, we plot the data!!!
+```{r qq}
+qqnorm(temperatures, main = "Q-Q Plot of Mean Annual Temperatures", pch = 19, col = "blue")
+qqline(temperatures, col = "red", lwd = 2)
+
+grid()
+```
+
+Since most of the data points lie on or around the red line, we confirm the assumption of normality. 
+
+Now, we construct a 95% confidence interval. 
+
+Let's use R to make this process easier...
+```{r CI}
+variance_temp <- var(temperatures)
+
+df <- length(temperatures) - 1  
+alpha <- 0.05  
+chi_sq_lower <- qchisq(alpha / 2, df, lower.tail = FALSE)
+chi_sq_upper <- qchisq(1 - alpha / 2, df, lower.tail = FALSE)
+
+variance_lower <- (df * variance_temp) / chi_sq_lower
+variance_upper <- (df * variance_temp) / chi_sq_upper
+
+sd_lower <- sqrt(variance_lower)
+sd_upper <- sqrt(variance_upper)
+cat("95% Confidence Interval for Standard Deviation:\n")
+cat("Lower Limit:", round(sd_lower, 3), "°C\n")
+cat("Upper Limit:", round(sd_upper, 3), "°C\n")
+```
+
+## Problem 8.4.1
+
+### Part A
+
+Ultimately, we wish to solve the following to determine the confidence intervals:
+$$
+\hat{p} \pm Z_{\alpha/2}(\sqrt{\frac{\hat{p}(1-\hat{p})}{n}})
+$$
+, where $\hat{p}=\frac{x}{n}$.
+We will use R to speed up calculations...
+
+```{r Bush}
+x <- 412 # bush voters
+n <- 768 # college grads
+conf_level <- 0.95
+
+p_hat <- x / n
+
+z <- qnorm(1 - (1 - conf_level)/2)
+
+SE <- sqrt(p_hat * (1 - p_hat) / n)
+
+l_bound <- p_hat - z * SE
+u_bound <- p_hat + z * SE
+
+cat("We find the 95% Confidence Interval for p to be", 
+    round(l_bound, 5), "to", round(u_bound, 5))
+```
+
+### Part B
+
+We find $\hat{p}=\frac{412}{768}=0.5365$. 
+
+Therefore, we have:
+$$
+SE=\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}=0.0173
+$$
+
+Using R, 
+```{r BushAgain}
+z_lower <- qnorm(conf_level)
+
+lower_conf_bound <- p_hat - z_lower * SE
+
+cat("95% Lower Confidence Bound for p:", round(lower_conf_bound, 5))
+```
+
+And so, we have arrived at our answer of 50.69% for the 95% LCB.
+
+
